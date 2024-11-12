@@ -13,13 +13,8 @@ const app = express();
 // Cấu hình view engine là EJS
 app.set('view engine', 'ejs');
 
-// Middleware để chọn thư mục views dựa trên ngôn ngữ
-app.use((req, res, next) => {
-  const lang = req.query.lang || 'en'; // Giả sử truyền ngôn ngữ qua query parameter 'lang'
-  const viewsDir = lang === 'vn' ? 'vn' : 'en';
-  app.set('views', path.join(__dirname, viewsDir));
-  next();
-});
+// Cấu hình thư mục views và engine
+app.set('views', path.join(__dirname, 'views'));
 
 
 // Lấy thư mục ảnh
@@ -323,10 +318,10 @@ app.get('/Password', auth_user, (req, res) => {
   res.render('Password', { website, userLogin, error_message, success_message });
 });
 
-app.get('/Notification', auth_user, (req, res) => {
-  const website = 'Notification.ejs';
+app.get('/Notifications', auth_user, (req, res) => {
+  const website = 'Notifications.ejs';
   const userLogin = res.locals.userLogin
-  res.render('Notification', { website, userLogin });
+  res.render('Notifications', { website, userLogin });
 });
 
 app.get('/Signup_en', auth_user, (req, res) => {
@@ -572,117 +567,77 @@ app.get('/Admin/index', auth_user, (req, res) => {
   res.render('Admin/index', { website, userLogin });
 });
 
+app.get('/Admin/addProduct', auth_user, (req, res) => {
+  const website = 'addProduct.ejs';
+  const userLogin = res.locals.userLogin
+  res.render('Admin/addProduct', { website, userLogin });
+});
+
+app.get('/Admin/addCategory', auth_user, (req, res) => {
+  const website = 'addCategory.ejs';
+  const userLogin = res.locals.userLogin
+  res.render('Admin/addCategory', { website, userLogin });
+});
+
+app.get('/Admin/manageUser', auth_user, (req, res) => {
+  const sql = "SELECT * FROM user";
+  const website = 'manageUser.ejs';
+  const userLogin = res.locals.userLogin
+  conn.query(sql, (error, results) => {
+     if (error) throw error;
+
+     const users = results.map(user => ({
+        id: user.userID,
+        name: user.userName,
+        email: user.email,
+        image: user.image
+     }));
+
+     res.render('Admin/manageUser', { website, userLogin, users }); 
+  });
+});
+
+app.get('/Admin/manageProduct', auth_user, (req, res) => {
+  const sql = "SELECT * FROM product";
+  const website = 'manageProduct.ejs';
+  const userLogin = res.locals.userLogin
+  conn.query(sql, (error, results) => {
+     if (error) throw error;
+
+     const products = results.map(product => ({
+        ...product,
+        p_image: product.p_image.split(',').map(img => img.trim())
+     }));
+
+     res.render('Admin/manageProduct', { website, userLogin, products }); 
+  });
+});
 
 
+app.get('/Admin/comment', auth_user, (req, res) => {
+  const website = 'comment.ejs';
+  const userLogin = res.locals.userLogin
+  res.render('Admin/comment', { website, userLogin });
+});
 
+app.get('/Admin/ManageOrder', auth_user, (req, res) => {
+  const website = 'ManageOrder.ejs';
+  const userLogin = res.locals.userLogin
+  res.render('Admin/ManageOrder', { website, userLogin });
+});
 
-// app.get('/Category_Product', auth_user, (req, res) => {
-//   const website = 'Category_Product.ejs';
-//   const userLogin = res.locals.userLogin
-//   res.render('Category_Product', { website, userLogin });
-// });
+app.get('/Admin/ManageDiscount', auth_user, (req, res) => {
+  const website = 'ManageDiscount.ejs';
+  const userLogin = res.locals.userLogin
+  res.render('Admin/ManageDiscount', { website, userLogin });
+});
 
-// app.get('/Category_Product', auth_user, (req, res) => {
-//   const website = 'Category_Product.ejs';
-//   const userLogin = res.locals.userLogin
-//   res.render('Category_Product', { website, userLogin });
-// });
+app.get('/Admin/ManageReview', auth_user, (req, res) => {
+  const website = 'ManageReview.ejs';
+  const userLogin = res.locals.userLogin
+  res.render('Admin/ManageReview', { website, userLogin });
+});
 
-// app.get('/Category_Product', auth_user, (req, res) => {
-//   const website = 'Category_Product.ejs';
-//   const userLogin = res.locals.userLogin
-//   res.render('Category_Product', { website, userLogin });
-// });
-
-// app.get('/Category_Product', auth_user, (req, res) => {
-//   const website = 'Category_Product.ejs';
-//   const userLogin = res.locals.userLogin
-//   res.render('Category_Product', { website, userLogin });
-// });
-
-// app.get('/Category_Product', auth_user, (req, res) => {
-//   const website = 'Category_Product.ejs';
-//   const userLogin = res.locals.userLogin
-//   res.render('Category_Product', { website, userLogin });
-// });
-
-// app.get('/Category_Product', auth_user, (req, res) => {
-//   const website = 'Category_Product.ejs';
-//   const userLogin = res.locals.userLogin
-//   res.render('Category_Product', { website, userLogin });
-// });
-
-// app.get('/Category_Product', auth_user, (req, res) => {
-//   const website = 'Category_Product.ejs';
-//   const userLogin = res.locals.userLogin
-//   res.render('Category_Product', { website, userLogin });
-// });
-
-// app.get('/Category_Product', auth_user, (req, res) => {
-//   const website = 'Category_Product.ejs';
-//   const userLogin = res.locals.userLogin
-//   res.render('Category_Product', { website, userLogin });
-// });
-
-// app.get('/Category_Product', auth_user, (req, res) => {
-//   const website = 'Category_Product.ejs';
-//   const userLogin = res.locals.userLogin
-//   res.render('Category_Product', { website, userLogin });
-// });
-
-// app.get('/Category_Product', auth_user, (req, res) => {
-//   const website = 'Category_Product.ejs';
-//   const userLogin = res.locals.userLogin
-//   res.render('Category_Product', { website, userLogin });
-// });
-
-// app.get('/Category_Product', auth_user, (req, res) => {
-//   const website = 'Category_Product.ejs';
-//   const userLogin = res.locals.userLogin
-//   res.render('Category_Product', { website, userLogin });
-// });
-
-// app.get('/Category_Product', auth_user, (req, res) => {
-//   const website = 'Category_Product.ejs';
-//   const userLogin = res.locals.userLogin
-//   res.render('Category_Product', { website, userLogin });
-// });
-
-// app.get('/Category_Product', auth_user, (req, res) => {
-//   const website = 'Category_Product.ejs';
-//   const userLogin = res.locals.userLogin
-//   res.render('Category_Product', { website, userLogin });
-// });
-
-// app.get('/Category_Product', auth_user, (req, res) => {
-//   const website = 'Category_Product.ejs';
-//   const userLogin = res.locals.userLogin
-//   res.render('Category_Product', { website, userLogin });
-// });
-
-// app.get('/Category_Product', auth_user, (req, res) => {
-//   const website = 'Category_Product.ejs';
-//   const userLogin = res.locals.userLogin
-//   res.render('Category_Product', { website, userLogin });
-// });
-
-// app.get('/Category_Product', auth_user, (req, res) => {
-//   const website = 'Category_Product.ejs';
-//   const userLogin = res.locals.userLogin
-//   res.render('Category_Product', { website, userLogin });
-// });
-
-// app.get('/Category_Product', auth_user, (req, res) => {
-//   const website = 'Category_Product.ejs';
-//   const userLogin = res.locals.userLogin
-//   res.render('Category_Product', { website, userLogin });
-// });
-
-// app.get('/Category_Product', auth_user, (req, res) => {
-//   const website = 'Category_Product.ejs';
-//   const userLogin = res.locals.userLogin
-//   res.render('Category_Product', { website, userLogin });
-// });
 // Cấu hình cổng để server lắng nghe
 const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
