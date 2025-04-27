@@ -5,7 +5,9 @@ const conn = mysql.createConnection({
   host: 'localhost',
   user: 'root',
   password: '',
-  database: 'keeppley-shop'
+  database: 'keeppley-shop',
+  port : 3306,
+  connectTimeout : 10000
 });
 
 // Kết nối với cơ sở dữ liệu
