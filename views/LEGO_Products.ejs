@@ -1,12 +1,10 @@
-<?php $website = 'product'; ?>
-
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
     <%- include('head.ejs') %>
         <title>Brick Shop - LEGO Products</title>
-        <link rel="stylesheet" href="../css/product.css" />
+        <link rel="stylesheet" href="../css/category_product.css" />
 </head>
 
 
@@ -20,7 +18,7 @@
     <!-- Breadcrumb -->
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="/index">Home</a></li>
+            <li class="breadcrumb-item"><a href="/">Home</a></li>
             <li class="breadcrumb-item"><a href="/product">Products</a></li>
             <li class="breadcrumb-item active" aria-current="page">LEGO</li>
         </ol>
@@ -37,13 +35,13 @@
 
     <section class="products">
         <h2>LEGO Products</h2>
-        <div class="product-grid">
+        <div class="category-grid">
             <% if (categories.length> 0) { %>
                 <% categories.forEach(category=> { %>
                     <a href="/Category_Product/?id=<%= category.id %>">
                         <div class="product">
                             <!-- Hiển thị hình ảnh đầu tiên trong mảng images -->
-                            <img src="../images/<%= category.images[0] %>" alt="<%= category.name %>">
+                            <img style="object-fit: cover;" src="../images/<%= category.images[0] %>" height="200" alt="<%= category.name %>">
                             <p>
                                 <%= category.name %>
                             </p>

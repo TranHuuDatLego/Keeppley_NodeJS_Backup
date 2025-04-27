@@ -154,41 +154,47 @@
 <body>
 
     <!-- Sidebar -->
-    <div id="cartSidebar" class="cart-sidebar">
-        <div class="cart-header">
+   <div id="cartSidebar" class="cart-sidebar">
+         <div class="cart-header">
             <h2>Your Cart</h2>
             <span id="closeSidebar" class="close-btn">&times;</span>
         </div>
         <div class="cart-content">
             <div class="free-shipping-banner">
                 Congratulations! You've got Free Shipping!
-                
             </div>
-            <div class="cart-item">
-                <img src="../images/20221104154412172.jpg" height="100" width="100" alt="Elephant Jolly Cat">
-                <div class="cart-item-info">
-                    <p>Hello Car</p>
-                    <span>1 x $10.99</span>
-                </div>
-                <span class="cart-item-remove">&times;</span>
-            </div>
-            <div class="cart-item">
-                <img src="../images/20221111120727826.jpg" height="100" width="100" alt="Elephant Jolly Cat">
-                <div class="cart-item-info">
-                    <p>Doraemon</p>
-                    <span>1 x $10.99</span>
-                </div>
-                <span class="cart-item-remove">&times;</span>
-            </div>
+            <% if (cartItems.length> 0) { %>
+                <% cartItems.forEach(item=> { %>
+                    <div class="cart-item">
+                        <img src="../images/<%= item.p_image %>" height="100" width="100" alt="<%= item.p_type %>">
+                        <div class="cart-item-info">
+                            <p>
+                                <%= item.p_name %>
+                            </p>
+                            <span>
+                                <%= item.quantity %> x $<%= item.p_price.toFixed(2) %>
+                            </span>
+                        </div>
+                        <form action="/delete-cart" method="post">
+                            <input type="hidden" name="p_id" value="<%= item.p_id %>">
+                            <button class="cart-item-remove">&times;</button>
+                        </form>
+                    </div>
+                    <% }); %>
+                        <% } else { %>
+                            <p>Your cart is empty.</p>
+                            <% } %>
         </div>
         <div class="cart-footer">
-            <div class="cart-total">Total: $21.98</div>
+            <div class="cart-total">Total: $<%= totalAmount.toFixed(2) %>
+            </div>
             <div class="cart-actions">
-                <button>VIEW CART</button>
-                <button>YOUR ORDER</button>
+                <a style="padding: 8px;" href="/view-cart"><button>VIEW CART</button></a>
+                <a style="padding: 8px;" href="/order_history"><button>YOUR ORDER</button></a>
             </div>
         </div>
     </div>
+
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
